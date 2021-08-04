@@ -29,12 +29,29 @@ const controller = {
 
 	// Create - Form to create
 	create: (req, res) => {
-		// Do the magic
+		return res.render('product-create-form')
 	},
 	
 	// Create -  Method to store
 	store: (req, res) => {
-		// Do the magic
+		/* return res.send(req.body) */ /* cersioro que la información que estoy mandando en el formulario me está llegando al controlador */
+		const {name, price, discount, category, description}= req.body;
+		let product= {
+			id: (products[products.length-1].id+1), /* se accede al Array, se toma la última posición y se le agrega uno */
+			name,
+			price: +price,
+			discount: +discount,
+			category,
+			description,
+			image: "default-image.png",
+		}
+		
+
+		products.push(product) /* traigo la variente productos y le pusheo product */
+
+		fs.writeFileSync(productsFilePath,JSON.stringify(products,null,2),'utf-8') /* guardo en la base de datos el producto nuevo */
+		
+		return res.redirect('/products')
 	},
 
 	// Update - Form to edit
